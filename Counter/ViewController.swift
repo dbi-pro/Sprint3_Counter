@@ -9,18 +9,32 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var CountLabel: UILabel!
-    @IBOutlet weak var ButtonPlus: UIButton!
-    @IBOutlet weak var ButtonMinus: UIButton!
-    @IBOutlet weak var ButtonZero: UIButton!
-    @IBOutlet weak var TextHistory: UITextView!
+    @IBOutlet weak var countLabel: UILabel!
+    @IBOutlet weak var buttonPlus: UIButton!
+    @IBOutlet weak var buttonMinus: UIButton!
+    @IBOutlet weak var buttonZero: UIButton!
+    @IBOutlet weak var textHistory: UITextView!
     
-    var numberOfCounter: Int = 0
+    private var numberOfCounter: Int = 0
     
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yy HH:mm:ss"
+        return formatter
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+    }
+    
+    private func setTextOnLabelAndAddHistory(stringForHistory: String) {
+        
+        countLabel.text = numberOfCounter == 0 ? "\(numberOfCounter)" : "Значение счетчика: \(numberOfCounter)"
+        
+        let dateString = dateFormatter.string(from: Date())
+        textHistory.text.append("\n[\(dateString)]: \(stringForHistory)")
+        textHistory.scrollToBottom()
     }
     
     @IBAction func buttonPlusDidTap(_ sender: Any) {
@@ -50,22 +64,6 @@ class ViewController: UIViewController {
         numberOfCounter = 0
         setTextOnLabelAndAddHistory(stringForHistory: "значение сброшено")
 
-    }
-
-//  Посмотрел прием работы с DateFormatter, но использовал встроенную функцию
-    
-//    func formattedDate() -> String {
-//        
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-//        return formatter.string(from: Date())
-//    }
-    
-    func setTextOnLabelAndAddHistory(stringForHistory: String) {
-        
-        CountLabel.text = numberOfCounter == 0 ? "\(numberOfCounter)" : "Значение счетчика: \(numberOfCounter)"
-        TextHistory.text.append("\n [\(Date().formatted())]: " + stringForHistory)
-        TextHistory.scrollToBottom()
     }
     
 }
